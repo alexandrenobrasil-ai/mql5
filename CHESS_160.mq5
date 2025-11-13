@@ -7,10 +7,10 @@
 #property link      "https://github.com/chess160"
 #property version   "1.00"
 
-#include "ChessEngine.mqh"
-#include "CSVLogger.mqh"
-#include "TelegramChess.mqh"
-#include "HistoryTracker.mqh"
+#include <CHESS160/ChessEngine.mqh>
+#include <CHESS160/CSVLogger.mqh>
+#include <CHESS160/TelegramChess.mqh>
+#include <CHESS160/HistoryTracker.mqh>
 
 //--- Input parameters
 input group "=== TELEGRAM ==="
