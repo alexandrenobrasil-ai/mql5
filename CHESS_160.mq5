@@ -120,7 +120,7 @@ void OnDeinit(const int reason)
    Print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
    Print("Total scans effectués: ", total_scans);
    Print("Total alertes envoyées: ", total_alerts);
-   Print("Historique conservé: ", tracker.GetHistoryCount(), " snapshots");
+   Print("Historique conservé: ", tracker->GetHistoryCount(), " snapshots");
 
    EventKillTimer();
 
@@ -169,7 +169,7 @@ void OnTimer()
    // Afficher historique si demandé
    if(ShowHistoryOnScan)
    {
-      tracker.PrintHistory(5);
+      tracker->PrintHistory(5);
    }
 }
 
@@ -274,8 +274,8 @@ void ScanSymbol(string symbol)
    }
 
    // Mapper sur stratégies
-   ChessStrategy high_strat = chess.GetStrategyByMinute(high_idx);
-   ChessStrategy low_strat = chess.GetStrategyByMinute(low_idx);
+   ChessStrategy high_strat = chess->GetStrategyByMinute(high_idx);
+   ChessStrategy low_strat = chess->GetStrategyByMinute(low_idx);
 
    if(high_strat.case_id == "" || low_strat.case_id == "")
    {
@@ -287,10 +287,10 @@ void ScanSymbol(string symbol)
    double cur_price = SymbolInfoDouble(symbol, SYMBOL_BID);
 
    // Analyser cohérence
-   string coherence = chess.AnalyzeCoherence(high_strat, low_strat);
+   string coherence = chess->AnalyzeCoherence(high_strat, low_strat);
 
    // Recommandation
-   string reco = chess.GetRecommendation(cur_price, high_price, low_price);
+   string reco = chess->GetRecommendation(cur_price, high_price, low_price);
 
    // Stats
    int delta_risk = MathAbs(high_strat.risque - low_strat.risque);
@@ -315,13 +315,13 @@ void ScanSymbol(string symbol)
       should_alert = true;
    }
 
-   if(AlertOnSacrifice && (chess.IsSacrificeStrategy(high_strat) || chess.IsSacrificeStrategy(low_strat)))
+   if(AlertOnSacrifice && (chess->IsSacrificeStrategy(high_strat) || chess->IsSacrificeStrategy(low_strat)))
    {
       priority = "HIGH";
       should_alert = true;
    }
 
-   if(AlertOnCelebre && (chess.IsCelebreStrategy(high_strat) || chess.IsCelebreStrategy(low_strat)))
+   if(AlertOnCelebre && (chess->IsCelebreStrategy(high_strat) || chess->IsCelebreStrategy(low_strat)))
    {
       priority = "MEDIUM";
       should_alert = true;
@@ -345,14 +345,14 @@ void ScanSymbol(string symbol)
    {
       if(LogAllScans || (LogOnlyAlerts && should_alert))
       {
-         logger.LogMove(symbol, high_strat.case_id, low_strat.case_id,
+         logger->LogMove(symbol, high_strat.case_id, low_strat.case_id,
                        high_strat.nom, low_strat.nom,
                        high_price, low_price,
                        high_time, low_time,
                        coherence, delta_risk, avg_comp,
                        phase_trans, reco, priority);
 
-         logger.LogHighLowHistory(symbol, start, now,
+         logger->LogHighLowHistory(symbol, start, now,
                                  high_price, high_time, high_idx, high_strat.case_id,
                                  low_price, low_time, low_idx, low_strat.case_id,
                                  cur_price, 0, 0);
@@ -362,7 +362,7 @@ void ScanSymbol(string symbol)
    // Telegram Alert
    if(EnableTelegramAlerts && should_alert && TelegramToken != "" && TelegramChatID != "")
    {
-      telegram.SendChessAlert(symbol,
+      telegram->SendChessAlert(symbol,
                              high_strat, low_strat,
                              high_price, high_time, high_idx,
                              low_price, low_time, low_idx,
@@ -374,27 +374,27 @@ void ScanSymbol(string symbol)
    }
 
    // Tracker
-   tracker.AddSnapshot(high_price, high_time, high_idx, high_strat.case_id,
+   tracker->AddSnapshot(high_price, high_time, high_idx, high_strat.case_id,
                       low_price, low_time, low_idx, low_strat.case_id,
                       cur_price, symbol);
 
    // Détecter changements
-   if(tracker.DetectStrategyChange(symbol, high_strat.case_id, "HIGH"))
+   if(tracker->DetectStrategyChange(symbol, high_strat.case_id, "HIGH"))
    {
       if(EnableCSVLogging)
       {
-         logger.LogStrategyDetection(symbol, high_strat.case_id, high_strat.nom,
+         logger->LogStrategyDetection(symbol, high_strat.case_id, high_strat.nom,
                                     high_strat.phase, high_strat.risque,
                                     high_strat.complexite, high_strat.principe,
                                     high_time, "HIGH_CHANGE");
       }
    }
 
-   if(tracker.DetectStrategyChange(symbol, low_strat.case_id, "LOW"))
+   if(tracker->DetectStrategyChange(symbol, low_strat.case_id, "LOW"))
    {
       if(EnableCSVLogging)
       {
-         logger.LogStrategyDetection(symbol, low_strat.case_id, low_strat.nom,
+         logger->LogStrategyDetection(symbol, low_strat.case_id, low_strat.nom,
                                     low_strat.phase, low_strat.risque,
                                     low_strat.complexite, low_strat.principe,
                                     low_time, "LOW_CHANGE");
