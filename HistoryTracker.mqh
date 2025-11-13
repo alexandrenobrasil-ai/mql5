@@ -3,7 +3,6 @@
 //|                          CHESS-160 History Tracker               |
 //+------------------------------------------------------------------+
 #property copyright "CHESS-160 System"
-#property strict
 
 //+------------------------------------------------------------------+
 //| Structure pour snapshot historique                              |

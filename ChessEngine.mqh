@@ -3,7 +3,6 @@
 //|                          CHESS-160 Engine - 64 Stratégies       |
 //+------------------------------------------------------------------+
 #property copyright "CHESS-160 System"
-#property strict
 
 //+------------------------------------------------------------------+
 //| Structure pour une stratégie d'échecs                           |
@@ -138,7 +137,7 @@ public:
    }
 
    // Analyser cohérence entre 2 stratégies
-   string AnalyzeCoherence(ChessStrategy &high, ChessStrategy &low)
+   string AnalyzeCoherence(const ChessStrategy &high, const ChessStrategy &low)
    {
       // Vérifier transition de phase
       bool phase_ok = true;
@@ -198,13 +197,13 @@ public:
    }
 
    // Vérifier si sacrifice
-   bool IsSacrificeStrategy(ChessStrategy &strat)
+   bool IsSacrificeStrategy(const ChessStrategy &strat)
    {
       return strat.sacrifice;
    }
 
    // Vérifier si partie célèbre
-   bool IsCelebreStrategy(ChessStrategy &strat)
+   bool IsCelebreStrategy(const ChessStrategy &strat)
    {
       return strat.celebre;
    }

@@ -3,7 +3,6 @@
 //|                          CHESS-160 Telegram Alerts               |
 //+------------------------------------------------------------------+
 #property copyright "CHESS-160 System"
-#property strict
 
 //+------------------------------------------------------------------+
 //| Classe TelegramChess                                             |
@@ -12,7 +11,7 @@ class TelegramChess
 {
 private:
    string BuildMessage(string symbol,
-                      ChessStrategy &high_strat, ChessStrategy &low_strat,
+                      const ChessStrategy &high_strat, const ChessStrategy &low_strat,
                       double high_price, datetime high_time, int high_minute,
                       double low_price, datetime low_time, int low_minute,
                       double current_price, string coherence, string recommendation)
@@ -128,7 +127,7 @@ public:
    ~TelegramChess() {}
 
    void SendChessAlert(string symbol,
-                       ChessStrategy &high_strat, ChessStrategy &low_strat,
+                       const ChessStrategy &high_strat, const ChessStrategy &low_strat,
                        double high_price, datetime high_time, int high_minute,
                        double low_price, datetime low_time, int low_minute,
                        double current_price, string coherence, string recommendation,

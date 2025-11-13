@@ -3,7 +3,6 @@
 //|                          CHESS-160 CSV Logger                    |
 //+------------------------------------------------------------------+
 #property copyright "CHESS-160 System"
-#property strict
 
 //+------------------------------------------------------------------+
 //| Classe CSVLogger                                                 |
@@ -22,13 +21,13 @@ private:
       detection_file = "CHESS160_Detections.csv";
 
       // Créer headers si fichiers n'existent pas
-      if(!FileIsExist(moves_file))
+      if(!FileExist(moves_file))
          CreateMovesFile();
 
-      if(!FileIsExist(history_file))
+      if(!FileExist(history_file))
          CreateHistoryFile();
 
-      if(!FileIsExist(detection_file))
+      if(!FileExist(detection_file))
          CreateDetectionFile();
    }
 

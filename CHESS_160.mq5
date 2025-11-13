@@ -6,7 +6,6 @@
 #property copyright "CHESS-160 System"
 #property link      "https://github.com/chess160"
 #property version   "1.00"
-#property strict
 
 #include <ChessEngine.mqh>
 #include <CSVLogger.mqh>
